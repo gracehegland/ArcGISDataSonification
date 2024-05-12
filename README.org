@@ -16,7 +16,6 @@ Then, there is a beep at the end of the line to inform the user that they have r
 |---+------------+--------------------------------------|
 |   | Key        | Function                             |
 |---+------------+--------------------------------------|
-| / | <>         | >                                    |
 |   | Tab        | Play a line                          |
 |   | Esc        | Terminate the program                |
 |   | Up Arrow   | Move up a line                       |
@@ -72,7 +71,7 @@ Additionally, *software installs may be necessary to connect to a MIDI port outs
      import sys
 
      for p in sys.path:
-	 print(p)
+         print(p)
    #+end_src
    The sixth folder listed is where the package should have been installed
 6. Check where the package is installing with the ArcGIS Python Command Prompt
