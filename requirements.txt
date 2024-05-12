@@ -1,0 +1,4 @@
+python-rtmidi==1.5.8
+gTTS==2.5.1
+pynput==1.7.6
+pysinewave==0.0.7

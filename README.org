@@ -1,0 +1,90 @@
+
+#+TITLE: Sonification Set Up and Use Guide
+#+AUTHOR: Grace Hegland
+
+* About
+This program was written to take CSV data exported from an ArcGIS Pro attribute table.
+Specifically, the program works with a CSV containing a column for latitude data, a column for longitude data, and a column of data to sonify.
+The data will then be filtered and sorted by latitude and longitude in order to produce lines representing latitude bands.
+The program sweeps across each line from West to East.
+A sine wave plays continuously as the user sweeps from West to East.
+Piano notes are scattered along the sine wave, representing the sonified data.
+Pitch increases as the data value increases.
+For example, if mean crop field damage after a hail storm is the sonified data, the higher the piano pitch, the more crop field damage occurred.
+Then, there is a beep at the end of the line to inform the user that they have reached the end of the line.
+
+|---+------------+--------------------------------------|
+|   | Key        | Function                             |
+|---+------------+--------------------------------------|
+| / | <>         | >                                    |
+|   | Tab        | Play a line                          |
+|   | Esc        | Terminate the program                |
+|   | Up Arrow   | Move up a line                       |
+|   | Down Arrow | Move down a line                     |
+|   | 1          | Zoom into the left half of a region  |
+|   | 2          | Zoom into the right half of a region |
+|   | 0          | Return the zoom to the default       |
+|   | s          | Jump to the starting line            |
+|   | m          | Jump to the middle line              |
+|   | e          | Jump to the ending line              |
+|   | i          | Read the current line                |
+|   | z          | Read the current zoom level          |
+|   | h          | Read all key press functions         |
+|---+------------+--------------------------------------|
+
+
+This program can also be used to read CSV data outside of ArcGIS Pro.
+A Windows specific library was used to generate beeps for the program, so if running this program outside of ArcGIS and not on Windows device, another library will need to be substited in for the beeps.
+Additionally, *software installs may be necessary to connect to a MIDI port outside of the ArcGIS Python Command Prompt*.
+
+* ArcGIS Set Up Guide 
+** Changing the Active Environment
+1. In ArcGIS Pro, select Project from the Ribbon
+2. Select Package Manager
+3. Select the gear icon next to the active environment to open the Environment Manager
+4. Click the clone environment button
+5. Once the clone environment dialog box appears, browse to a folder to store the new environment
+6. Click OK to finalize the clone
+7. Set the active environment to the newly created clone environment
+
+** Install libraries in the ArcGIS Python Command Prompt
+1. Open the ArcGIS Python Command Prompt (it should default to the now active cloned environment)
+2. Use the =requirements.txt= file to install the dependencies into the cloned environment:
+   #+begin_src shell
+     pip install -r requirements.txt
+   #+end_src
+3. Alternatively, pip install the following libraries:
+   - python-rtmidi
+   - pynput
+   - pysinewave
+   - gTTS
+
+** Test that the libraries have installed in the correct location
+1. On the ribbon in ArcGIS Pro, click insert
+2. Then, select new notebook to open an ArcGIS Jupyter notebook
+3. Run the following in the notebook:
+   #+begin_src python
+   import rtmidi
+   #+end_src
+4. If rtmidi imports successfully, skip to 1.4
+5. If rtmidi is not found, run the following in the notebook:
+   #+begin_src python
+     import sys
+
+     for p in sys.path:
+	 print(p)
+   #+end_src
+   The sixth folder listed is where the package should have been installed
+6. Check where the package is installing with the ArcGIS Python Command Prompt
+7. Copy the results of the package installation to the sixth folder
+8. Test the rtmidi import again, and the issue should be resolved
+
+* ArcGIS Use Guide
+1. Export an attribute table from ArcGIS Pro as a CSV
+2. Run as a Command Line Program in the ArcGIS Python Command Prompt with system arguments for the filename, name of the longitude column of the CSV, name of the latitude column of the CSV, and name of the data to map to MIDI notes column of the CSV
+
+** Example of Running as a Command Line Program: 
+#+begin_src shell
+python ArcGISSonification.py C:\path\to\your_csv.csv XLong YLat dataToMap
+#+end_src
+
