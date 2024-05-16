@@ -8,7 +8,7 @@ from pynput import keyboard
 from pynput.keyboard import Key, Listener
 from pysinewave import SineWave
 from threading import Thread
-from gtts import gTTS
+from cytolk import tolk
 
 import sys
 import time
@@ -16,6 +16,9 @@ import winsound # this is a Windows specific library
 import rtmidi
 import pandas as pd
 import os
+
+tolk.try_sapi(True)  # Use Microsoft speech API if no screen reader is active
+tolk.load()
 
 # Read in the data that has been exported from an ArcGIS attribute table as a csv file
 fileName, XLongColumnName, YLatColumnName, dataToMapColumnName = sys.argv[1:]
@@ -73,30 +76,20 @@ def in_range(latlong_and_note, bandWidth):
 
 # This function should read to the user what the current line is 
 def say_line(line_counter): 
-    myText = f"line {line_counter}" 
-    language = 'en'
-    output = gTTS(text = myText, lang = language, slow = False)
-    output.save("output.mp3")
-    os.system("start output.mp3")
-    
+    tolk.output(f"line {line_counter}", interrupt=True)
+
 # This function should read to the user the function of each key
 def say_help_info(): 
-    Text = "Tab plays a line. The left arrow decreases the speed of lines. The right arrow increases the speed of lines.The down arrow moves to the next line. The up arrow moves to the previous line. One allows you to zoom in on the first half of a region. Two allows you to zoom in on the second half of a region. Zero returns the zoom to the default. Z tells you the zoom level of the current region. S takes you to the starting line. M takes you to the middle line. E takes you to the ending line. I tells you what line you are currently on."
-    language = 'en'
-    output = gTTS(text = Text, lang = language, slow = False)
-    output.save("output.mp3")
-    os.system("start output.mp3")
+    HELP_TEXT = "Tab plays a line. The left arrow decreases the speed of lines. The right arrow increases the speed of lines. The down arrow moves to the next line. The up arrow moves to the previous line. One allows you to zoom in on the first half of a region. Two allows you to zoom in on the second half of a region. Zero returns the zoom to the default. Z tells you the zoom level of the current region. S takes you to the starting line. M takes you to the middle line. E takes you to the ending line. I tells you what line you are currently on."
+    tolk.output(HELP_TEXT, interrupt=True)
 
 def calculate_zoom_percentage(zoom_counter): 
     return 100/(2**(zoom_counter))  
 
 # This function should read to the user the current zoom level
 def say_zoom_info(zoom_counter): 
-    ZText = f"The zoom level is {calculate_zoom_percentage(zoom_counter)} percent" 
-    language = 'en'
-    output = gTTS(text = ZText, lang = language, slow = False)
-    output.save("output.mp3")
-    os.system("start output.mp3")
+    ZTEXT = f"The zoom level is {calculate_zoom_percentage(zoom_counter)} percent" 
+    tolk.output(ZTEXT, interrupt=True)
 
 # Play a sine wave that decreases in pitch as you move along the x axis 
 def play_sine_wave(lineDuration): 
