@@ -53,9 +53,9 @@ Additionally, *software installs may be necessary to connect to a MIDI port outs
    #+end_src
 3. Alternatively, pip install the following libraries:
    - python-rtmidi
-   - pynput
+   - wxpython
    - pysinewave
-   - gTTS
+   - cytolk
 
 ** Test that the libraries have installed in the correct location
 1. On the ribbon in ArcGIS Pro, click insert
