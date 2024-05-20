@@ -56,7 +56,9 @@ class ArcGISSonification(wx.Frame):
     MAXIMUM_LINE = 60
 
     def __init__(self, file_name, x_long_col, y_lat_col, data_to_map_col):
-        super().__init__(parent=None, title="ArcGIS sonification (press h for help)")
+        super().__init__(
+            parent=None, title="ArcGIS sonification (press h for help)"
+        )
         self.Bind(wx.EVT_KEY_DOWN, self.on_key_press)
 
         data = pd.read_csv(file_name)
@@ -265,10 +267,16 @@ class ArcGISSonification(wx.Frame):
     def speed_up(self):
         self.duration /= 2
         self.note_time /= 2
+        # TODO: Instead of adjusting duration and note time, maybe just have
+        # a "speed" scaler for everything, and report it here.
+        tolk.output("Faster", interrupt=True)
 
     def slow_down(self):
         self.duration *= 2
         self.note_time *= 2
+        # TODO: Instead of adjusting duration and note time, maybe just have
+        # a "speed" scaler for everything, and report it here.
+        tolk.output("Slower", interrupt=True)
 
     def _move(self, direction: int):
         if (self.line_counter + direction) % (
@@ -279,7 +287,7 @@ class ArcGISSonification(wx.Frame):
         self.current_lat -= self.band_width * direction
         self.line_counter += direction
         self.zoom_counter = 0
-        tolk.output(str(self.line_counter), True)
+        tolk.output(str(self.line_counter), interrupt=True)
 
     def move_down(self):
         self._move(1)
@@ -292,16 +300,19 @@ class ArcGISSonification(wx.Frame):
             self.longrange[0] + (self.longrange[1] - self.longrange[0]) / 2
         )
         self.zoom_counter += 1
+        tolk.output("Left zoomed", interrupt=True)
 
     def zoom_in_second_half(self):
         self.longrange[0] = (
             self.longrange[0] + (self.longrange[1] - self.longrange[0]) / 2
         )
         self.zoom_counter += 1
+        tolk.output("Right zoomed", interrupt=True)
 
     def reset_zoom(self):
         self.longrange = [self.longitudes[0], self.longitudes[-1]]
         self.zoom_counter = 0
+        tolk.output("Zoomed out", True)
 
     def move_start(self):
         self._move(self.__class__.MINIMUM_LINE - self.line_counter)
