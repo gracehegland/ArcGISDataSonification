@@ -6,7 +6,7 @@ AUTHOR: Grace Hegland
 """
 
 import wx
-import sys
+import argparse
 import time
 import winsound  # this is a Windows specific library
 import rtmidi
@@ -318,9 +318,26 @@ class ArcGISSonification(wx.Frame):
 
 
 if __name__ == "__main__":
-    fileName, XLongColumnName, YLatColumnName, dataToMapColumnName = sys.argv[
-        1:
-    ]
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "path", help="The path to an ArcGIS formatted CSV file to read."
+    )
+    parser.add_argument(
+        "XLongColumnName",
+        help="The name of the column containing longitude data.",
+    )
+    parser.add_argument(
+        "YLatColumnName",
+        help="The name of the column containing latitude data.",
+    )
+    parser.add_argument(
+        "dataToMapColumnName",
+        help=(
+            "The name of the column containing the variable on which to map"
+            " the soundscape."
+        ),
+    )
+    args = parser.parse_args()
 
     tolk.try_sapi(
         True  # Use Microsoft speech API if no screen reader is active
@@ -329,7 +346,10 @@ if __name__ == "__main__":
 
     app = wx.App()
     frame = ArcGISSonification(
-        fileName, XLongColumnName, YLatColumnName, dataToMapColumnName
+        args.path,
+        args.XLongColumnName,
+        args.YLatColumnName,
+        args.dataToMapColumnName,
     )
     frame.Show()
     app.MainLoop()
