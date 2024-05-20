@@ -8,7 +8,6 @@ AUTHOR: Grace Hegland
 import wx
 import argparse
 import time
-import winsound  # this is a Windows specific library
 import rtmidi
 import pandas as pd
 
@@ -72,7 +71,6 @@ class ArcGISSonification(wx.Frame):
         )
 
         self.current_lat = self.lats[0]
-        self.beep_frequency = 1000
         self.line_counter = 1
         self.longrange = [self.longitudes[0], self.longitudes[-1]]
         self.zoom_counter = 0
@@ -263,8 +261,6 @@ class ArcGISSonification(wx.Frame):
             # if there are no notes in the line, just play the sine wave
             self._play_sine_wave(self.duration)
 
-        winsound.Beep(self.beep_frequency, 500)
-
     def speed_up(self):
         self.duration /= 2
         self.note_time /= 2
@@ -280,7 +276,6 @@ class ArcGISSonification(wx.Frame):
             return
         self.longrange = [self.longitudes[0], self.longitudes[-1]]
         self.current_lat -= self.band_width * direction
-        self.beep_frequency -= 5 * direction
         self.line_counter += direction
         self.zoom_counter = 0
         tolk.output(str(self.line_counter), True)
