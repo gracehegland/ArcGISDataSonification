@@ -325,38 +325,41 @@ class ArcGISSonification(wx.Frame):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "path", help="The path to an ArcGIS formatted CSV file to read."
-    )
-    parser.add_argument(
-        "XLongColumnName",
-        help="The name of the column containing longitude data.",
-    )
-    parser.add_argument(
-        "YLatColumnName",
-        help="The name of the column containing latitude data.",
-    )
-    parser.add_argument(
-        "dataToMapColumnName",
-        help=(
-            "The name of the column containing the variable on which to map"
-            " the soundscape."
-        ),
-    )
-    args = parser.parse_args()
+    try:
+        parser = argparse.ArgumentParser()
+        parser.add_argument(
+            "path", help="The path to an ArcGIS formatted CSV file to read."
+        )
+        parser.add_argument(
+            "XLongColumnName",
+            help="The name of the column containing longitude data.",
+        )
+        parser.add_argument(
+            "YLatColumnName",
+            help="The name of the column containing latitude data.",
+        )
+        parser.add_argument(
+            "dataToMapColumnName",
+            help=(
+                "The name of the column containing the variable on which to"
+                " map the soundscape."
+            ),
+        )
+        args = parser.parse_args()
 
-    tolk.try_sapi(
-        True  # Use Microsoft speech API if no screen reader is active
-    )
-    tolk.load()
+        tolk.try_sapi(
+            True  # Use Microsoft speech API if no screen reader is active
+        )
+        tolk.load()
 
-    app = wx.App()
-    frame = ArcGISSonification(
-        args.path,
-        args.XLongColumnName,
-        args.YLatColumnName,
-        args.dataToMapColumnName,
-    )
-    frame.Show()
-    app.MainLoop()
+        app = wx.App()
+        frame = ArcGISSonification(
+            args.path,
+            args.XLongColumnName,
+            args.YLatColumnName,
+            args.dataToMapColumnName,
+        )
+        frame.Show()
+        app.MainLoop()
+    finally:
+        tolk.unload()
