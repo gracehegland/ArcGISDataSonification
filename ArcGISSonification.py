@@ -56,7 +56,7 @@ class ArcGISSonification(wx.Frame):
     MAXIMUM_LINE = 60
 
     def __init__(self, file_name, x_long_col, y_lat_col, data_to_map_col):
-        super().__init__(parent=None, title="ArcGIS data sonification")
+        super().__init__(parent=None, title="ArcGIS sonification (press h for help)")
         self.Bind(wx.EVT_KEY_DOWN, self.on_key_press)
 
         data = pd.read_csv(file_name)
