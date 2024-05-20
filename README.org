@@ -11,7 +11,6 @@ A sine wave plays continuously as the user sweeps from West to East.
 Piano notes are scattered along the sine wave, representing the sonified data.
 Pitch increases as the data value increases.
 For example, if mean crop field damage after a hail storm is the sonified data, the higher the piano pitch, the more crop field damage occurred.
-Then, there is a beep at the end of the line to inform the user that they have reached the end of the line.
 
 |---+------------+--------------------------------------|
 |   | Key        | Function                             |
