@@ -11,34 +11,36 @@ import time
 import rtmidi
 import pandas as pd
 
+from enum import Enum
 from pysinewave import SineWave
 from threading import Thread
 from cytolk import tolk
 
 
+class MidiNote(Enum):
+    C2 = 36
+    D2 = 38
+    E2 = 40
+    G2 = 43
+    A2 = 45
+    C3 = 48
+    D3 = 50
+    E3 = 52
+    G3 = 55
+    A3 = 57
+    C4 = 60
+    D4 = 62
+    E4 = 64
+    G4 = 67
+    A4 = 69
+    C5 = 72
+    D5 = 74
+    E5 = 76
+    G5 = 79
+    A5 = 81
+
+
 class ArcGISSonification(wx.Frame):
-    NOTE_MIDIS = [
-        36,
-        38,
-        40,
-        43,
-        45,
-        48,
-        50,
-        52,
-        55,
-        57,
-        60,
-        62,
-        64,
-        67,
-        69,
-        72,
-        74,
-        76,
-        79,
-        81,
-    ]
     HELP_TEXT = (
         "Tab plays a line. The left arrow decreases the speed of lines. "
         "The right arrow increases the speed of lines. The down arrow "
@@ -118,15 +120,14 @@ class ArcGISSonification(wx.Frame):
 
     def _prepare_data(self, data, x_long_col, y_lat_col, data_to_map):
         if min(data_to_map) == max(data_to_map):
-            midi_data = [57] * self.number_of_records
+            midi_data = [MidiNote.A3.value] * self.number_of_records
         else:
             y_data = self.map_value(
                 data_to_map, min(data_to_map), max(data_to_map), 0, 1
             )
+            midi_scale = tuple(MidiNote)
             midi_data = [
-                self.__class__.NOTE_MIDIS[
-                    round(self.map_value(y, 0, 1, 0, 19))
-                ]
+                midi_scale[round(self.map_value(y, 0, 1, 0, 19))].value
                 for y in y_data
             ]
 
