@@ -1,4 +1,4 @@
 python-rtmidi==1.5.8
 cytolk < 1.0.0
-pynput==1.7.6
+wxpython==4.2.1
 pysinewave==0.0.7
